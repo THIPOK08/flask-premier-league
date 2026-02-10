@@ -65,4 +65,23 @@
       </button>
     </form>
   </div>
+
+<div class="mb-3" id="cs_block" style="display: none;">
+    <label class="form-label">Clean Sheets</label>
+    <input type="number" name="clean_sheets" class="form-control" value="{{ player.clean_sheets or 0 }}">
+</div>
+
+<script>
+// ฟังก์ชันเช็คว่าถ้าเป็น GK ให้โชว์ช่อง Clean Sheets
+function checkPosition() {
+    const pos = document.querySelector('select[name="position"]').value;
+    const block = document.getElementById('cs_block');
+    block.style.display = (pos === 'GK') ? 'block' : 'none';
+}
+
+// ให้ทำงานทันทีที่โหลดหน้า และทุกครั้งที่เปลี่ยนตำแหน่ง
+document.querySelector('select[name="position"]').addEventListener('change', checkPosition);
+checkPosition(); 
+</script>
+
 {% endblock %}

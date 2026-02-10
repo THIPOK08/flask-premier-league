@@ -82,3 +82,27 @@ def update_player(id):
                          player=player,
                          clubs=clubs)
 
+@player_bp.route('/<int:id>/update', methods=['GET', 'POST'])
+def update_player(id):
+    player = db.session.get(Player, id)
+    # ... (โค้ดดึงข้อมูล clubs เดิม) ...
+    
+    if request.method == 'POST':
+        # 1. รับค่าจากฟอร์มมาเก็บในตัวแปร
+        name = request.form['name']
+        position = request.form['position']
+        # รับค่า clean_sheets (ถ้าตำแหน่งไม่ใช่ GK ให้เป็น None ตามโจทย์)
+        cs_form = request.form.get('clean_sheets')
+        clean_sheets = int(cs_form) if position == 'GK' and cs_form else None
+
+        # 2. อัปเดตค่าลงใน Object player
+        player.name = name
+        player.position = position
+        # --- เพิ่มบรรทัดนี้ครับ ---
+        player.clean_sheets = clean_sheets 
+        # -----------------------
+        player.goals = int(request.form['goals'])
+        # ... (อัปเดตค่าอื่นๆ ตามเดิม) ...
+        
+        db.session.commit()
+        return redirect(url_for('players.index'))

@@ -31,3 +31,22 @@ class Player(db.Model):
   
   def __repr__(self):
     return f'<Club: {self.name}>'
+  
+  class Player(db.Model):
+    __tablename__ = 'player'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    position: Mapped[str] = mapped_column(String(20), nullable=False)
+    # ... (โค้ดเดิมอื่นๆ) ...
+    goals: Mapped[int] = mapped_column(Integer, default=0, nullable=True)
+    
+    # --- เพิ่มบรรทัดนี้ลงไปครับ ---
+    clean_sheets: Mapped[int] = mapped_column(Integer, nullable=True) 
+    # ---------------------------
+    
+    squad_no: Mapped[int] = mapped_column(Integer, nullable=True)
+    # ... (ส่วนที่เหลือ) ...
+
+    def __repr__(self):
+        return f'<Player: {self.name} ({self.position})>'
+    
