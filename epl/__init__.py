@@ -12,10 +12,11 @@ def create_app():
   # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/epl_s02_db'
   # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/epl_s02_db'
   # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://epl_postgresql_db_user:olbj7CSlns1K6fE7EOEfppm3pyqueRK2@dpg-d65kn594tr6s73fsn1fg-a.oregon-postgres.render.com/epl_postgresql_db'
-  app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
+  #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
   # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
   # postgresql://epl_db_2ezk_user:20nPxFMn0I5WrMlyjIDBme2ShC2weHJ9@dpg-d65lcvtum26s73b7o6a0-a.oregon-postgres.render.com/epl_db_2ezk
   app.secret_key = b'hguyfdrerdfguhiophgytrt'
+  app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/THIPOK/flask-premier-league/epl.db'
   
   db.init_app(app)
   migrate.init_app(app, db)
