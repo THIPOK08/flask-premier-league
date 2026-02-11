@@ -1,27 +1,16 @@
-from epl import db
-from sqlalchemy import Integer, String, ForeignKey
+from epl.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import List
+from sqlalchemy import Integer, String, ForeignKey
 
 class Club(db.Model):
-  __tablename__ = 'club'
-  id: Mapped[int] = mapped_column(Integer, primary_key=True)
-  name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
-  stadium: Mapped[str] = mapped_column(String(50), nullable=False)
-  year: Mapped[int] = mapped_column(Integer, nullable=False)
-  logo: Mapped[str] = mapped_column(String(255), nullable=False)
-
-  players: Mapped[List['Player']] = relationship(back_populates='club')
-
-  def __repr__(self):
-    return f'<Club: {self.name}>'
-
-  __table_args__ = {'extend_existing': True}
-  # ... (ด้านบนที่เป็น class Club ให้คงไว้เหมือนเดิม) ...
+    __tablename__ = 'club'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    players: Mapped[list['Player']] = relationship(back_populates='club')
 
 class Player(db.Model):
     __tablename__ = 'player'
-    __table_args__ = {'extend_existing': True}  # เพิ่มบรรทัดนี้ครับ
+    __table_args__ = {'extend_existing': True} # บรรทัดนี้สำคัญมาก!
     
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
@@ -35,5 +24,4 @@ class Player(db.Model):
     club: Mapped['Club'] = relationship(back_populates='players')
 
     def __repr__(self):
-        return f'<Player: {self.name} ({self.position})>'
-    
+        return f'<Player: {self.name}>'
