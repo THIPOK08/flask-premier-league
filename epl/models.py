@@ -16,36 +16,23 @@ class Club(db.Model):
   def __repr__(self):
     return f'<Club: {self.name}>'
 
-class Player(db.Model):
-  __tablename__ = 'player'
-  id: Mapped[int] = mapped_column(Integer, primary_key=True)
-  name: Mapped[str] = mapped_column(String(50), nullable=False)
-  position: Mapped[str] = mapped_column(String(20), nullable=False)
-  nationality: Mapped[str] = mapped_column(String(50), nullable=False)
-  goals: Mapped[int] = mapped_column(Integer, default=0, nullable=True)
-  squad_no: Mapped[int] = mapped_column(Integer, nullable=True)
-  img: Mapped[str] = mapped_column(String(255), nullable=False)
-  club_id: Mapped[int] = mapped_column(Integer, ForeignKey(Club.id))
+  __table_args__ = {'extend_existing': True}
+  # ... (ด้านบนที่เป็น class Club ให้คงไว้เหมือนเดิม) ...
 
-  club: Mapped[Club] = relationship(back_populates='players')
-  
-  def __repr__(self):
-    return f'<Club: {self.name}>'
-  
-  class Player(db.Model):
+class Player(db.Model):
     __tablename__ = 'player'
+    __table_args__ = {'extend_existing': True}  # เพิ่มบรรทัดนี้ครับ
+    
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     position: Mapped[str] = mapped_column(String(20), nullable=False)
-    # ... (โค้ดเดิมอื่นๆ) ...
     goals: Mapped[int] = mapped_column(Integer, default=0, nullable=True)
-    
-    # --- เพิ่มบรรทัดนี้ลงไปครับ ---
-    clean_sheets: Mapped[int] = mapped_column(Integer, nullable=True) 
-    # ---------------------------
-    
+    clean_sheets: Mapped[int] = mapped_column(Integer, nullable=True)
     squad_no: Mapped[int] = mapped_column(Integer, nullable=True)
-    # ... (ส่วนที่เหลือ) ...
+    img: Mapped[str] = mapped_column(String(255), nullable=False)
+    club_id: Mapped[int] = mapped_column(Integer, ForeignKey('club.id'))
+
+    club: Mapped['Club'] = relationship(back_populates='players')
 
     def __repr__(self):
         return f'<Player: {self.name} ({self.position})>'
