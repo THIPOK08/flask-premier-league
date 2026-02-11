@@ -4,13 +4,14 @@ from sqlalchemy import Integer, String, ForeignKey
 
 class Club(db.Model):
     __tablename__ = 'club'
+    __table_args__ = {'extend_existing': True}
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     players: Mapped[list['Player']] = relationship(back_populates='club')
 
 class Player(db.Model):
     __tablename__ = 'player'
-    __table_args__ = {'extend_existing': True} # บรรทัดนี้สำคัญมาก!
+    __table_args__ = {'extend_existing': True}
     
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
@@ -22,6 +23,3 @@ class Player(db.Model):
     club_id: Mapped[int] = mapped_column(Integer, ForeignKey('club.id'))
 
     club: Mapped['Club'] = relationship(back_populates='players')
-
-    def __repr__(self):
-        return f'<Player: {self.name}>'
