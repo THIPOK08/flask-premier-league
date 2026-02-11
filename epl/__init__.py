@@ -26,3 +26,7 @@ def create_app():
         app.register_blueprint(player_bp, url_prefix='/players')
 
     return app
+
+from epl.players.routes import player_bp
+from epl.clubs.routes import club_bp
+from epl.core.routes import core_bp
